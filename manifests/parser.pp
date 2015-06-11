@@ -4,10 +4,10 @@ define patterndb::parser (
   $syslogng_modules = $::patterndb::syslogng_modules
 ) {
   if ! defined(Class['Patterndb']) {
-    include patterndb
+    include ::patterndb
   }
   if empty($syslogng_modules) {
-    $modules = ''
+    $modules = undef
   } else {
     $tmp = join($syslogng_modules,' --module=')
     $modules = "--module=${tmp}"

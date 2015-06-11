@@ -1,5 +1,5 @@
 #
-class { 'patterndb':
+class { '::patterndb':
   base_dir => '/tmp/',
   syslogng_modules => [ 'pdbtool_test_would_fail_with_this_module' ],
   test_before_deploy => false
