@@ -14,16 +14,9 @@ class patterndb (
   validate_array($syslogng_modules)
 # package
   if $manage_package {
-    if is_string($package_name) {
-      $real_package_name = $package_name
-    } else {
-      case $::osfamily {
-        'RedHat': { $real_package_name = 'syslog-ng' }
-        'Debian': { $real_package_name = 'syslog-ng' }
-        default: { fail("unsupported osfamily: ${::osfamily}") }
-      }
+    class { '::patterndb::install':
+        package_name => $package_name,
     }
-    ensure_resource ( 'package', $real_package_name, { 'ensure' => 'installed' })
   }
   ensure_resource ( 'file', $temp_dir, { ensure => directory } )
   ensure_resource ( 'file', "${base_dir}/etc", { ensure => 'directory' } )
