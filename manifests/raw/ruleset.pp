@@ -16,7 +16,7 @@ define patterndb::raw::ruleset (
   validate_bool($recurse)
 
   if ! defined(Class['Patterndb']) {
-    include patterndb
+    include ::patterndb
   }
 
   if ! defined(Patterndb::Parser[$parser]) {

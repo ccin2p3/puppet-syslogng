@@ -30,7 +30,7 @@ This module will manage the pattern databases of *syslog-ng* by using existing f
 
 Depending on the top-level configuration variables `$base_dir` and `$temp_dir`, this module will manage and execute the following elements in order:
 
-0. (OPTIONAL) Manage package `syslog-ng`
+0. (OPTIONAL) Manage package `syslog-ng` and remove the default syslog daemon (usually rsyslog)
 1. Manage `$base_dir/etc/syslog-ng/patterndb.d` recursively
 2. Manage the contents of the above directory using [existing](#defined-type-patterndbrawruleset) or [generated](#defined-type-patterndbsimpleruleset) patterndb *ruleset* files
 3. Merge the contents of the latter using `pdbtool` into a temporary file `${temp_dir}/syslog-ng/patterndb/${parser}.xml` where `$parser` is the name of the *patterndb* (you can have as many as you want, *e.g.* for *staged parsing*.

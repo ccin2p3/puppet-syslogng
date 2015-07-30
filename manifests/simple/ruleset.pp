@@ -11,7 +11,7 @@ define patterndb::simple::ruleset (
 ) {
 
   if ! defined(Class['Patterndb']) {
-    include patterndb
+    include ::patterndb
   }
 
   $patterns_a = string2array($patterns)

@@ -1,5 +1,5 @@
 #
-class { 'patterndb':
+class { '::patterndb':
   base_dir => '/tmp',
   syslogng_modules => [ 'tfgeoip', 'tfgetent' ],
   test_before_deploy => true,

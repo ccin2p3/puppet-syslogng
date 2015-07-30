@@ -1,5 +1,5 @@
 #
-class { 'patterndb':
+class { '::patterndb':
   base_dir => '/tmp/'
 }
 
