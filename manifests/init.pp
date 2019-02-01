@@ -30,18 +30,25 @@ class patterndb (
   }
   ensure_resource (
     'file', "${base_dir}/etc/syslog-ng",
-    { ensure => 'directory' }
+    {
+      ensure  => 'directory',
+      require => Package[$real_package_name],
+    }
   )
   ensure_resource (
     'file', "${base_dir}/var/lib/syslog-ng",
-    { ensure => 'directory' }
+    {
+      ensure  => 'directory',
+      require => Package[$real_package_name],
+    }
   )
   ensure_resource (
     'file', "${base_dir}/var/lib/syslog-ng/patterndb",
     {
       ensure => 'directory',
       purge => true,
-      recurse => true
+      recurse => true,
+      require => Package[$real_package_name],
     }
   )
   $pdb_dir = "${base_dir}/etc/syslog-ng/patterndb.d"
@@ -50,6 +57,7 @@ class patterndb (
     purge   => true,
     recurse => true,
     source  => 'puppet:///modules/patterndb/patterndb.d',
+    require => Package[$real_package_name],
   }
 
   if $use_hiera {
