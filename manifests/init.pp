@@ -10,6 +10,7 @@ class patterndb (
   Boolean $test_before_deploy = true
 ) {
 # package
+  $require_package = undef
   if $manage_package {
     if is_string($package_name) {
       $real_package_name = $package_name
@@ -20,6 +21,7 @@ class patterndb (
         default: { fail("unsupported osfamily: ${::osfamily}") }
       }
     }
+    $require_package = Package[$real_package_name]
     ensure_resource ( 'package', $real_package_name, { 'ensure' => 'installed' })
   }
   ensure_resource ( 'file', $temp_dir, { ensure => directory } )
@@ -32,14 +34,14 @@ class patterndb (
     'file', "${base_dir}/etc/syslog-ng",
     {
       ensure  => 'directory',
-      require => Package[$real_package_name],
+      require => $require_package,
     }
   )
   ensure_resource (
     'file', "${base_dir}/var/lib/syslog-ng",
     {
       ensure  => 'directory',
-      require => Package[$real_package_name],
+      require => $require_package,
     }
   )
   ensure_resource (
@@ -48,7 +50,7 @@ class patterndb (
       ensure => 'directory',
       purge => true,
       recurse => true,
-      require => Package[$real_package_name],
+      require => $require_package,
     }
   )
   $pdb_dir = "${base_dir}/etc/syslog-ng/patterndb.d"
@@ -57,7 +59,7 @@ class patterndb (
     purge   => true,
     recurse => true,
     source  => 'puppet:///modules/patterndb/patterndb.d',
-    require => Package[$real_package_name],
+    require => $require_package,
   }
 
   if $use_hiera {
