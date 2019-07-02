@@ -10,7 +10,6 @@ class patterndb (
   Boolean $test_before_deploy = true
 ) {
 # package
-  $require_package = undef
   if $manage_package {
     if is_string($package_name) {
       $real_package_name = $package_name
@@ -23,6 +22,8 @@ class patterndb (
     }
     $require_package = Package[$real_package_name]
     ensure_resource ( 'package', $real_package_name, { 'ensure' => 'installed' })
+  } else {
+    $require_package = undef
   }
   ensure_resource ( 'file', $temp_dir, { ensure => directory } )
   if $_manage_top_dirs {
@@ -66,4 +67,3 @@ class patterndb (
     include patterndb::hiera
   }
 }
-
