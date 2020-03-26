@@ -40,3 +40,20 @@ spec/default_facts.yml:
           - bundle exec pdk build
           - bundle exec pdk module install pkg/*.tar.gz
           - bundle exec ./smoke/test
+.travis.yml:
+  stages:
+    - smoke
+  extras:
+    -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec USE_PDK=1
+      rvm: 2.4.5
+      stage: smoke
+      script:
+        - 'bundle exec puppet --version'
+        - 'bundle exec pdk build'
+        - 'bundle exec pdk module install pkg/*.tar.gz'
+        - 'bundle exec ./smoke/test -d'
+  addons:
+    apt:
+      packages:
+        - syslog-ng-core
