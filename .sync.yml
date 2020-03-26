@@ -4,3 +4,39 @@ spec/spec_helper.rb:
 spec/default_facts.yml:
   extra_facts:
     path: "/bin:/usr/bin:/usr/local/bin"
+.gitlab-ci.yml:
+  custom:
+    custom_stages:
+      - smoke
+    custom_jobs:
+      smoke syslog-ng puppet 5:
+        stage: smoke
+        image: ruby:2.5.3
+        variables:
+          PUPPET_GEM_VERSION: '~> 5'
+        script:
+          - apt-get update
+          - apt-get install syslog-ng -y
+          - syslog-ng --version
+          - rm Gemfile.lock
+          - echo 'gem "pdk", "~>1.10.0"'>>Gemfile
+          - bundle install --without system_tests --path vendor/bundle --jobs $(nproc)
+          - bundle exec puppet --version
+          - bundle exec pdk build
+          - bundle exec puppet module install pkg/*.tar.gz
+          - bundle exec ./smoke/test
+      smoke syslog-ng latest:
+        stage: smoke
+        allow_failure: true
+        image:
+          name: balabit/syslog-ng:latest
+          entrypoint: [""]
+        before_script: []
+        script:
+          - 'apt update || :'
+          - apt install ruby bundler -y
+          - bundle install --without system_tests
+          - bundle exec puppet --version
+          - bundle exec pdk build
+          - bundle exec pdk module install pkg/*.tar.gz
+          - bundle exec ./smoke/test

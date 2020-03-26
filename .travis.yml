@@ -3,6 +3,10 @@ os: linux
 dist: xenial
 language: ruby
 cache: bundler
+addons:
+  apt:
+    packages:
+      - syslog-ng-core
 before_install:
   - bundle -v
   - rm -f Gemfile.lock
@@ -12,8 +16,14 @@ before_install:
   - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
+install:
+  - '[ "${USE_PDK:-1}" == 1 ] && echo gem \"pdk\", \"\~\>1.9.0\">>Gemfile || :'
+  - bundle install
+  - '[ "${USE_PDK:-1}" == 1 ] && bundle exec pdk build || bundle exec puppet module build'
+  - bundle exec puppet module install pkg/*.tar.gz
 script:
   - 'bundle exec rake $CHECK'
+  - 'bundle exec ./smoke/test -d'
 bundler_args: --without system_tests
 rvm:
   - 2.5.7
@@ -31,11 +41,15 @@ jobs:
       env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
       stage: static
     -
-      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      env: PUPPET_GEM_VERSION="~> 4.10" CHECK=parallel_spec USE_PDK=0
+      rvm: 2.4.1
+      stage: spec
+    -
+      env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec USE_PDK=1
       rvm: 2.4.5
       stage: spec
     -
-      env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec USE_PDK=1
       rvm: 2.5.7
       stage: spec
     -
