@@ -1,0 +1,6 @@
+---
+spec/spec_helper.rb:
+  mock_with: ':rspec'
+spec/default_facts.yml:
+  extra_facts:
+    path: "/bin:/usr/bin:/usr/local/bin"
