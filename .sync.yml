@@ -18,11 +18,9 @@ spec/default_facts.yml:
           - apt-get update
           - apt-get install syslog-ng -y
           - syslog-ng --version
-          - rm Gemfile.lock
-          - echo 'gem "pdk", "~>1.10.0"'>>Gemfile
-          - bundle install --without system_tests --path vendor/bundle --jobs $(nproc)
+          - bundle install --without system_tests --path vendor/bundle
           - bundle exec puppet --version
-          - bundle exec pdk build
+          - bundle exec puppet module build
           - bundle exec puppet module install pkg/*.tar.gz
           - bundle exec ./smoke/test
       smoke syslog-ng latest:
@@ -35,10 +33,10 @@ spec/default_facts.yml:
         script:
           - 'apt update || :'
           - apt install ruby bundler -y
-          - bundle install --without system_tests
+          - bundle install --without system_tests --path vendor/bundle
           - bundle exec puppet --version
-          - bundle exec pdk build
-          - bundle exec pdk module install pkg/*.tar.gz
+          - bundle exec puppet module build
+          - bundle exec puppet module install pkg/*.tar.gz
           - bundle exec ./smoke/test
 .travis.yml:
   stages:
@@ -50,8 +48,8 @@ spec/default_facts.yml:
       stage: smoke
       script:
         - 'bundle exec puppet --version'
-        - 'bundle exec pdk build'
-        - 'bundle exec pdk module install pkg/*.tar.gz'
+        - 'bundle exec puppet module build'
+        - 'bundle exec puppet module install pkg/*.tar.gz'
         - 'bundle exec ./smoke/test -d'
   addons:
     apt:

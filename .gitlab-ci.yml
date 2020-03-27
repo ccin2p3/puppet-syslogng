@@ -31,6 +31,8 @@ parallel_spec-Ruby 2.5.7-Puppet ~> 6:
   stage: unit
   image: ruby:2.5.7
   script:
+    - gem --version
+    - bundle -v
     - bundle exec rake parallel_spec
   variables:
     PUPPET_GEM_VERSION: '~> 6'
@@ -52,11 +54,9 @@ smoke syslog-ng puppet 5:
   - apt-get update
   - apt-get install syslog-ng -y
   - syslog-ng --version
-  - rm Gemfile.lock
-  - echo 'gem "pdk", "~>1.10.0"'>>Gemfile
-  - bundle install --without system_tests --path vendor/bundle --jobs $(nproc)
+  - bundle install --without system_tests --path vendor/bundle
   - bundle exec puppet --version
-  - bundle exec pdk build
+  - bundle exec puppet module build
   - bundle exec puppet module install pkg/*.tar.gz
   - bundle exec ./smoke/test
 smoke syslog-ng latest:
@@ -68,11 +68,11 @@ smoke syslog-ng latest:
     - ''
   before_script: []
   script:
-  - 'apt update || :'
-  - apt install ruby bundler -y
-  - bundle install --without system_tests
+  - apt-get update
+  - apt-get install ruby bundler -y
+  - bundle install --without system_tests --path vendor/bundle
   - bundle exec puppet --version
-  - bundle exec pdk build
-  - bundle exec pdk module install pkg/*.tar.gz
+  - bundle exec puppet module build
+  - bundle exec puppet module install pkg/*.tar.gz
   - bundle exec ./smoke/test
 

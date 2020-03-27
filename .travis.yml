@@ -49,7 +49,7 @@ jobs:
     -
       env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec USE_PDK=1
       rvm: 2.4.5
-      script: ["bundle exec puppet --version", "bundle exec pdk build", "bundle exec pdk module install pkg/*.tar.gz", "bundle exec ./smoke/test -d"]
+      script: ["bundle exec puppet --version", "bundle exec puppet module build", "bundle exec puppet module install pkg/*.tar.gz", "bundle exec ./smoke/test -d"]
       stage: smoke
 branches:
   only:
