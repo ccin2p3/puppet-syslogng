@@ -4,6 +4,7 @@ describe 'patterndb::simple::rule' do
   let :facts do
     {
       osfamily: 'RedHat',
+      operatingsystem: 'RedHat',
       concat_basedir: '/tmp/concat-basedir',
     }
   end

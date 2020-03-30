@@ -4,6 +4,7 @@ describe 'patterndb::raw::ruleset' do
   let :facts do
     {
       osfamily: 'RedHat',
+      operatingsystem: 'RedHat',
     }
   end
   let :title do
