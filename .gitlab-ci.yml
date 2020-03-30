@@ -45,7 +45,7 @@ parallel_spec-Ruby 2.4.5-Puppet ~> 5:
 
 smoke syslog-ng puppet 5:
   stage: smoke
-  image: ruby:2.5.3
+  image: ruby:2.4.5
   variables:
     PUPPET_GEM_VERSION: "~> 5"
   script:
@@ -64,11 +64,13 @@ smoke syslog-ng latest:
     name: balabit/syslog-ng:latest
     entrypoint:
     - ''
+  variables:
+    PUPPET_GEM_VERSION: "~> 5"
   before_script: []
   script:
   - apt-get update
   - apt-get install ruby bundler -y
-  - bundle install --without system_tests --path vendor/bundle
+  - 'bundle install --without system_tests --path vendor/bundle || :'
   - bundle exec puppet --version
   - bundle exec puppet module build
   - bundle exec puppet module install pkg/*.tar.gz
