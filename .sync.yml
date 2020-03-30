@@ -31,8 +31,8 @@ spec/default_facts.yml:
           entrypoint: [""]
         before_script: []
         script:
-          - 'apt update || :'
-          - apt install ruby bundler -y
+          - apt-get update
+          - apt-get install ruby bundler -y
           - bundle install --without system_tests --path vendor/bundle
           - bundle exec puppet --version
           - bundle exec puppet module build
