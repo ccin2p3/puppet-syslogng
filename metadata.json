@@ -19,10 +19,27 @@
   ],
   "operatingsystem_support": [
     {
-      "operatingsystem": "RedHat"
+      "operatingsystem": "RedHat",
+			"operatingsystemrelease": [
+				"6",
+				"7",
+				"8"
+			]
     },
     {
-      "operatingsystem": "Debian"
+      "operatingsystem": "CentOS",
+			"operatingsystemrelease": [
+				"6",
+				"7",
+				"8"
+			]
+		},
+    {
+      "operatingsystem": "Debian",
+			"operatingsystemrelease": [
+				"9",
+				"10"
+			]
     }
   ],
   "requirements": [
